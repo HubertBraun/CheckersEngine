@@ -81,4 +81,17 @@ namespace sboard
 		}
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),15);	//returns to the standard colour
 	}
+
+	bool compare(board b1, board b2)
+	{
+		for (int y = 0; y < boardXY; y++)
+		{
+			for (int x = 0; x < boardXY; x++)
+			{
+				if (b1[y][x] != b2[y][x])
+					return false;
+			}
+		}
+		return true;
+	}
 }

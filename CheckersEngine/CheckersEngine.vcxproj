@@ -166,6 +166,7 @@
     <ClInclude Include="Engine\Piece.h" />
     <ClInclude Include="Engine\Tree.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Tests\Tests.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CheckersEngine.cpp" />
@@ -180,6 +181,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Tests\Tests.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
