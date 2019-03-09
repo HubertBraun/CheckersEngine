@@ -80,6 +80,7 @@ namespace sboard
 			}
 		}
 		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),15);	//returns to the standard colour
+		gotoxy(0, boardXY+2);
 	}
 
 	bool compare(board b1, board b2)

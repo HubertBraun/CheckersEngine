@@ -9,9 +9,11 @@ private:
 
 	inline void readTestName(std::string name);
 	void readResult(int testResult, int test);
-	void printTest(std::string testName,std::array<std::array<char,8>,8> arrayb, int id);
+	void printTest(std::string testName,std::array<std::array<char, boardXY>, boardXY> arrayb, int id);
 	bool uniquesscheck(std::vector<Tree> &moves);
+	void changearrayboard(std::array<std::array<char, boardXY>, boardXY> arrayb);
 public:
 	void test(int id);
 	void alltests();
+	double performanceTest();
 };

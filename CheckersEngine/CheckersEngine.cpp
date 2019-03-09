@@ -6,6 +6,7 @@
 #include"Engine/AI.h"
 #include"Engine/BoardUtilities.h"
 #include"Tests/Tests.h"
+#include<chrono>
 #define debug 0	// 0 - release, 1 -debug
 
 int main()
@@ -13,24 +14,19 @@ int main()
 #ifdef debug
 	#if debug == 0
 		AI ai;
-		Tree t;
 		bool player = true;
-
-		sboard::print(t.board_);
-		ai.getBestMove(t, player, 7);
-		getchar();
 		sboard::print(ai.tree_.board_);
-		player = false;
-		while (1)	//test of the alghoritm
+		while (!ai.win(player))	//test of the alghoritm
 		{
-			ai.getBestMove(ai.tree_, player, 7);
+			ai.getBestMove(player, 8);	// 8 - depth
 			getchar();
 			sboard::print(ai.tree_.board_);
 			player = !player;
 		}
+		std::cout << "Winner: " << ((player) ? ("red") : ("blue")) << std::endl;
 	#else
 	Tests t;
-	t.test(10);
+	std::cout << "Elapsed time: " << t.performanceTest() / 1000.0 << "s" << std::endl;
 	#endif
 #endif
 	return 0;

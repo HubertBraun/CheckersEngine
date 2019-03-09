@@ -4,8 +4,10 @@
 #include <windows.h>
 #include <cstdlib>
 #include<array>
+#include<chrono>
 #include "../Engine/BoardUtilities.h"
-using namespace std;
+using std::cout;
+using std::endl;
 using arrayboard = std::array<std::array<char, 8>, 8>;
 void gotoxy(int x, int y)	//goes to the (X,Y) coordinates
 {
@@ -15,17 +17,10 @@ void gotoxy(int x, int y)	//goes to the (X,Y) coordinates
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
-void Tests::printTest(std::string testName, std::array<std::array<char, 8>, 8> arrayb, int id)
+void Tests::printTest(std::string testName, std::array<std::array<char, boardXY>, boardXY> arrayb, int id)
 {
-	board b;
-	for (int i = 0; i < boardXY; i++)	//copy to char[8][8]
-	{
-		for (int j = 0; j < boardXY; j++)
-		{
-			b[i][j] = arrayb[i][j];
-		}
-	}
-	changeBoard(b);	//change board
+
+	changearrayboard(arrayb);	//change board
 	generateMove(tree_, 1);	//generate all possible moves
 	readTestName(testName);
 	sboard::print(tree_.board_);
@@ -70,6 +65,19 @@ bool Tests::uniquesscheck(std::vector<Tree> &moves)
 	return true;
 }
 
+void Tests::changearrayboard(std::array<std::array<char, boardXY>, boardXY> arrayb)
+{
+	board b;
+	for (int i = 0; i < boardXY; i++)
+	{
+		for (int j = 0; j < boardXY; j++)
+		{
+			b[i][j] = arrayb[i][j];
+		}
+	}
+	changeBoard(b);
+}
+
 void Tests::test(int id)
 {
 
@@ -90,6 +98,7 @@ void Tests::test(int id)
 				0,2,0,2,0,2,0,2,
 				2,0,2,0,2,0,2,0, };
 			printTest("Man moves",b, id);
+
 			break;
 
 		case 1:
@@ -223,10 +232,10 @@ void Tests::test(int id)
 				0,0,0,0,0,0,0,0,
 				0,0,2,0,2,0,2,0,
 				0,0,0,0,0,0,0,0, };
-
+			changearrayboard(b);
 			sboard::print(tree_.board_);
 			readTestName("Choosing the best move");
-			getBestMove(tree_, 1, 8); // depth
+			getBestMove(1, 8); // depth
 			sboard::print(tree_.board_);
 			readTestName("Choosing the best move");
 			getchar();
@@ -250,6 +259,7 @@ void Tests::test(int id)
 		default:
 			break;
 		}
+		gotoxy(0, boardXY + 2);
 
 	}
 	catch(std::exception exc)
@@ -291,5 +301,23 @@ void Tests::test(int id)
 		{
 			test(i);
 		}
+	}
+
+	double Tests::performanceTest()
+	{
+		AI ai;
+		bool player = true;
+		int depth = 10;
+		sboard::print(ai.tree_.board_);
+		auto start = std::chrono::system_clock::now();
+		for (int i = 0; i < 10; i++)	//just few first moves
+		{
+			ai.getBestMove(player, depth);
+			sboard::print(ai.tree_.board_);
+			player = !player;
+		}
+		auto end = std::chrono::system_clock::now();
+		auto elapsed_time = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+		return elapsed_time.count();	//elapsing time
 	}
 

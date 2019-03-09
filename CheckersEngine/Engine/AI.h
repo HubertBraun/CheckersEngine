@@ -18,7 +18,7 @@ public:
 	Tree tree_;
 	AI();
 	~AI(){pieces_.clear();}	
-	void getBestMove(Tree& t, bool player, int depth);
+	void getBestMove(bool player, int depth);
 	int negamax(Tree &t, int depth, int colour, int alpha, int beta);
-
+	bool win(bool player);
 };

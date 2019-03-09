@@ -2,6 +2,7 @@
 #include <iostream>
 #include <Windows.h>
 #include <algorithm>
+#include<stack>
 #include"BoardUtilities.h"
 using std::make_unique;
 AI::AI()
@@ -172,13 +173,13 @@ int evaluate(const Tree& t, bool player)
 	return toReturn;
 }
 
-void AI::getBestMove(Tree& t, bool player, int depth)
+void AI::getBestMove(bool player, int depth)
 {
 	int best = -1000000;
 	int result;
 	board bestBoard;
-	generateMove(t, player);
-	for (auto& k : t.next_)
+	generateMove(tree_, player);
+	for (auto& k : tree_.next_)
 	{
 		if (player)
 			result = -negamax(k, depth, -1, -1000, 1000);
@@ -205,21 +206,29 @@ int AI::negamax(Tree &t, int depth, int colour, int alpha, int beta)
 		else
 			generateMove(t, false);
 	}
-	if (depth == 0 || t.next_.empty()) 
+	if (depth == 0 || t.next_.empty())
 		return colour * evaluate(t, 1) - depth; //faster win is better
 	std::sort(t.next_.begin(), t.next_.end(), [](Tree& t1, Tree& t2)
 	{
 		return evaluate(t1, 1) < evaluate(t2, 1);
 	});
-	int bestvalue = -100000;
+
 	for (auto& i : t.next_)
 	{
 		int temp = -negamax(i, depth - 1, -colour, -beta, -alpha);
-		bestvalue = max(bestvalue, temp);
-		alpha = max(bestvalue, temp);
+		alpha = max(alpha, temp);
 
 		if (alpha >= beta)
 			break;
 	}
-	return bestvalue;
+	return alpha;
+}
+bool AI::win(bool player)
+{
+	generateMove(tree_, player);
+	if (tree_.next_.empty())
+	{
+		return true;
+	}
+	return false;
 }
